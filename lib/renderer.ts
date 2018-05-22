@@ -1,8 +1,10 @@
-import { YoWebParser } from './yowebParser';
+import { YoWebParser } from './parser/yowebParser';
 import * as fs from 'fs'
 import * as readline from 'readline';
-import { ChatLine, chatMessageStore } from './chatStore';
-import { ChatWindow } from './ChatWindow';
+import { ChatLine, chatMessageStore } from './store/chatStore';
+import { ChatWindow } from './components/ChatWindow';
+import * as ReactDOM from 'react-dom';
+import * as React from 'react';
 
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
@@ -100,3 +102,7 @@ if (divElement) {
         evt.dataTransfer.dropEffect = 'none';
     });
 }
+
+ReactDOM.render(
+    React.createElement(ChatWindow), document.getElementById('windowspot')
+);
