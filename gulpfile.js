@@ -1,29 +1,21 @@
 const spawn = require('cross-spawn');
 const gulp = require('gulp');
-const sourcemaps = require('gulp-sourcemaps');
-const ts = require('gulp-typescript');
 const path = require('path');
-
-const tsProject = ts.createProject('tsconfig.json');
-
-gulp.task('compile', () => {
-  return tsProject.src()
-    .pipe(sourcemaps.init())
-    .pipe(tsProject())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('dist'));
-});
+const webpack = require('webpack');
+const config = require('./webpack.dev.js');
 
 gulp.task('copy_html', () => {
   return gulp.src(['lib/*.html'])
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('start', ['compile', 'copy_html'], () => {
+gulp.task('start', ['copy_html'], () => {
   return new Promise((resolve, reject) => {
-    spawn(getLocalPathForBinary('electron'), ['dist/app.js'], { stdio: 'inherit' })
-      .on('close', exitCode => onProcessClosed(exitCode, resolve, reject))
-      .on('error', reject);
+    return webpack(config).run((err, stats) => {
+      spawn(getLocalPathForBinary('electron'), ['dist/app.bundle.js'], { stdio: 'inherit' })
+        .on('close', exitCode => onProcessClosed(exitCode, resolve, reject))
+        .on('error', reject);
+    });
   });
 });
 

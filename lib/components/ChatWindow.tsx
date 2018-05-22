@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
+import { chatMessageStore } from '../store/chatStore';
+import { ChatMessage } from './ChatMessage';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { chatMessageStore } from './chatStore'
 
 @observer
 export class ChatWindow extends React.Component<{}, {}> {
@@ -10,12 +10,8 @@ export class ChatWindow extends React.Component<{}, {}> {
         return <div id="chatWindow">
                 <span>This is a chat window.</span>
                 {chatMessageStore.chatMessages.map( (message) => {
-                    return <span>{ message.timestamp + " " + message.channel + ": " + message.text }</span>
+                    return <ChatMessage message={message} />
                 })}
         </div>;
     }
 }
-
-ReactDOM.render(
-    <ChatWindow />, document.getElementById('windowspot')
-);
