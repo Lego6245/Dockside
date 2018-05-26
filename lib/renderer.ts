@@ -1,8 +1,10 @@
+import { ipcRenderer } from 'electron';
 import { YoWebParser } from './parser/yowebParser';
 import * as fs from 'fs'
 import * as readline from 'readline';
 import { ChatLine, chatMessageStore } from './store/chatStore';
 import { ChatWindow } from './components/ChatWindow';
+import { PirateInfo } from './components/PirateInfo';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 
@@ -18,6 +20,14 @@ let currentByte = 0;
 let readingFile = false;
 
 let skillGetter: YoWebParser = null;
+
+// Example use of Bridge API
+ipcRenderer.send('GET_PIRATE_INFO')
+ipcRenderer.on('GET_PIRATE_INFO', (_, pirateInfo: BasicPirateInfo) => {
+    ReactDOM.render(
+        React.createElement(PirateInfo, pirateInfo), document.getElementById('pirateinfo')
+    );
+});
 
 function parseChatLine(line: string): ChatLine {
     let chatLine = <ChatLine>{};
