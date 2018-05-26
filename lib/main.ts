@@ -1,4 +1,5 @@
 import { BrowserWindow } from 'electron';
+import { bridgeController } from './bridge/controller';
 
 export default class Main {
     static mainWindow: Electron.BrowserWindow;
@@ -20,6 +21,7 @@ export default class Main {
         Main.mainWindow
             .loadURL('file://' + __dirname + '/index.html');
         Main.mainWindow.on('closed', Main.onClose);
+        bridgeController.startProcess();
     }
 
     static main(app: Electron.App, browserWindow: typeof BrowserWindow) {
