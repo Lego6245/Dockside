@@ -12,7 +12,7 @@ type OutgoingBridgeMessage = {
     Data?: string
 };
 
-const PATH_TO_EXECUTABLE = `${__dirname}/resources/win/quartermaster.exe`;
+const PATH_TO_EXECUTABLE = `${__dirname}/resources/win/Bridge.exe`;
 
 class BridgeController extends EventEmitter {
     child: child_process.ChildProcess;
